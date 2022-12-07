@@ -169,18 +169,6 @@ void *mm_realloc(void *ptr, size_t size)
 
     else
     {
-        if (GET_SIZE(HDRP(nextptr)) == 0)
-        {
-            // epliogue 블록이면 힙을 필요한 만큼 늘려준다.
-            size_t extendsize = MAX((newSize - oldSize), 16);
-            if ((extend_heap(extendsize)) == NULL)
-                return NULL;
-            oldSize += extendsize;
-            PUT(HDRP(oldptr), PACK(oldSize, 1));
-            PUT(FTRP(oldptr), PACK(oldSize, 1));
-            place(oldptr, newSize);
-            return oldptr;
-        }
         if (alloc == 0 && nextSize + oldSize >= newSize)
         {
             oldSize += nextSize; // 사이즈를 다음 블록의 사이즈 만큼 증가
